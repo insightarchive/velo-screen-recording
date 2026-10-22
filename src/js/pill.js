@@ -24,10 +24,7 @@ function paint() {
 }
 
 $('pause').addEventListener('click', () => invoke(paused ? 'resume_recording' : 'pause_recording'));
-$('delete').addEventListener('click', () => {
-  if (!confirm('Delete this recording? This cannot be undone.')) return;
-  invoke('discard_recording');
-});
+$('delete').addEventListener('click', () => invoke('discard_recording'));
 $('stop').addEventListener('click', () => invoke('stop_recording'));
 
 listen('countdown-tick', ({ n }) => { $('time').textContent = String(n); });

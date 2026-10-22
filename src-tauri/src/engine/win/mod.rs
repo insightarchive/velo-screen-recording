@@ -152,7 +152,8 @@ impl Recording {
         let duration_ms = end_ms.saturating_sub(offset);
         let events = std::mem::take(&mut *self.shared.events.lock());
 
-        const SAVE_PROJECT: bool = true;
+        // Off per your call: don't write .velo.json next to recordings.
+        const SAVE_PROJECT: bool = false;
         let project_path = if SAVE_PROJECT {
             let video_name = self.video_path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
             let project = Project::new(
