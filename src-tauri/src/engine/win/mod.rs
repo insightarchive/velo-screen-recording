@@ -10,7 +10,7 @@ mod video_thumb;
 
 use super::{Finished, LevelsSink};
 use parking_lot::Mutex;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::Arc;
 use std::time::Instant;
@@ -159,27 +159,23 @@ impl Recording {
         let duration_ms = end_ms.saturating_sub(offset);
         let events = std::mem::take(&mut *self.shared.events.lock());
 
-        // Off per your call: don't write .velo.json next to recordings.
-        const SAVE_PROJECT: bool = false;
-        let project_path = if SAVE_PROJECT {
-            let video_name = self.video_path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-            let project = Project::new(
-                video_name,
-                self.screen,
-                self.fps,
-                duration_ms,
-                offset,
-                !self.cfg.cursor,
-                self.cfg.studio,
-                self.cfg.system,
-                self.cfg.mic,
-                events,
-            );
-            let project_path = Project::path_for(&self.video_path);
-            project.save(&project_path).ok().map(|_| project_path.to_string_lossy().into_owned())
-        } else {
-            None
-        };
+        // Saved to a hidden per-user app-data folder, not beside the video: the editor and export
+        // need this data, but the recordings folder itself should only ever show the video.
+        let video_name = self.video_path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+        let project = Project::new(
+            video_name,
+            self.screen,
+            self.fps,
+            duration_ms,
+            offset,
+            !self.cfg.cursor,
+            self.cfg.studio,
+            self.cfg.system,
+            self.cfg.mic,
+            events,
+        );
+        let project_path = hidden_project_path(&self.video_path);
+        let project_path = project.save(&project_path).ok().map(|_| project_path.to_string_lossy().into_owned());
 
         let size_mb = std::fs::metadata(&self.video_path).map(|m| m.len() as f64 / 1_048_576.0).unwrap_or(0.0);
         Ok(Finished {
@@ -205,6 +201,20 @@ pub fn local_date_time() -> (String, String) {
         format!("{:04}-{:02}-{:02}", t.wYear, t.wMonth, t.wDay),
         format!("{:02}-{:02}-{:02}", t.wHour, t.wMinute, t.wSecond),
     )
+}
+
+/// Where a recording's project (zoom plan, input events) is kept: `%LOCALAPPDATA%\Velo
+/// Recorder\projects`, named from the video's filename plus a hash of its full path so two
+/// recordings with the same name in different folders never collide.
+fn hidden_project_path(video: &Path) -> PathBuf {
+    use std::hash::{Hash, Hasher};
+    let base = std::env::var_os("LOCALAPPDATA").map(PathBuf::from).unwrap_or_else(std::env::temp_dir);
+    let dir = base.join("Velo Recorder").join("projects");
+    let _ = std::fs::create_dir_all(&dir);
+    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+    video.hash(&mut hasher);
+    let stem = video.file_stem().and_then(|s| s.to_str()).unwrap_or("recording");
+    dir.join(format!("{stem}-{:016x}.velo.json", hasher.finish()))
 }
 
 fn resolve_folder(configured: &str) -> PathBuf {
