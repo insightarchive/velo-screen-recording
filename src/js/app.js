@@ -1,6 +1,6 @@
 import { icon, hydrate, fmtTime } from './ui.js';
 import { inTauri, invoke, listen, windowControl } from './bridge.js';
-import { settings, set, toggle, resetSettings, session, library, removeRecording, editor, ui, subscribe, devices, setDevices, preview, thumbs, videoThumbs } from './state.js';
+import { settings, set, toggle, resetSettings, session, library, addRecording, removeRecording, editor, ui, subscribe, devices, setDevices, preview, thumbs, videoThumbs, exportState } from './state.js';
 import * as sess from './session.js';
 import { connectBackend } from './session.js';
 import { view as recordView } from './views/record.js';
@@ -129,9 +129,50 @@ const ACTIONS = {
   'reveal-folder': () => { invoke('reveal_in_folder', { path: settings.folder }); toast(SOON); },
   reset: () => { resetSettings(); applyTheme(settings.theme); render(); },
   play: () => { const v = $('editor-video'); if (v) { v.paused ? v.play() : v.pause(); } },
-  export: () => toast(SOON),
+  export: () => exportVideo(),
   browse: () => toast(SOON),
 };
+
+async function exportVideo() {
+  if (exportState.active) return;
+  const rec = library.find((r) => r.id === ui.editorId) ?? library[0];
+  if (!rec) return;
+  if (!rec.projectPath) { toast('This recording has no edit data to export.'); return; }
+  const dot = rec.path.lastIndexOf('.');
+  const outPath = dot >= 0 ? `${rec.path.slice(0, dot)} (Edited)${rec.path.slice(dot)}` : `${rec.path} (Edited).mp4`;
+  const total = Math.max(rec.seconds, 1) * 1000;
+  const [t0, t1] = editor.trim;
+
+  exportState.active = true;
+  exportState.fraction = 0;
+  render();
+  try {
+    const done = await invoke('export_video', {
+      videoPath: rec.path,
+      projectPath: rec.projectPath,
+      outPath,
+      trimStartMs: Math.round((t0 / 100) * total),
+      trimEndMs: Math.round((t1 / 100) * total),
+    });
+    addRecording({
+      id: String(Date.now()),
+      name: (done.path.split(/[\\/]/).pop() || 'Export').replace(/\.mp4$/i, ''),
+      path: done.path,
+      projectPath: null,
+      seconds: done.seconds,
+      size: done.sizeMb,
+      mode: rec.mode,
+      createdAt: Date.now(),
+    });
+    toast('Export finished — saved to Library.');
+  } catch (e) {
+    toast(String(e));
+  } finally {
+    exportState.active = false;
+    exportState.fraction = 0;
+    render();
+  }
+}
 
 document.addEventListener('click', (e) => {
   const el = e.target.closest('button');
@@ -259,6 +300,11 @@ async function initBackend() {
     preview.src = dataUrl;
     const img = $('preview-frame');
     if (img) img.src = dataUrl; else render();
+  });
+  await listen('render-progress', ({ fraction }) => {
+    exportState.fraction = fraction;
+    const btn = $('export-btn');
+    if (btn) btn.textContent = `Exporting… ${Math.round(fraction * 100)}%`;
   });
   invoke('set_close_to_tray', { enabled: settings.onClose === 'Hide to tray' });
   refreshSources();

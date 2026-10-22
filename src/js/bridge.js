@@ -20,6 +20,7 @@ const mock = {
   reveal_in_folder: async () => {},
   set_close_to_tray: async () => {},
   video_thumbnail: async () => null,
+  export_video: async () => ({ path: '', projectPath: null, seconds: 0, sizeMb: 0, screen: { w: 0, h: 0 } }),
   show_countdown: async () => {},
   close_countdown: async () => {},
   cancel_countdown: async () => {},

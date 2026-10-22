@@ -49,3 +49,14 @@ pub fn capture_thumbnail(_mode: CaptureMode, _index: usize) -> Result<String, St
 pub fn video_thumbnail(_path: &str) -> Result<String, String> {
     Err(UNSUPPORTED.into())
 }
+
+pub fn render_project(
+    _project: &velo_core::Project,
+    _video_path: &std::path::Path,
+    _out_path: &std::path::Path,
+    _trim_start_ms: u64,
+    _trim_end_ms: u64,
+    _on_progress: impl Fn(f32),
+) -> Result<(), String> {
+    Err(UNSUPPORTED.into())
+}

@@ -251,6 +251,32 @@ fn load_project(path: String) -> Result<Project, String> {
     Project::load(std::path::Path::new(&path)).map_err(|e| e.to_string())
 }
 
+/// Renders the auto-zoom camera (and, when the raw cursor was left out, a redrawn cursor) into a
+/// finished video, keeping only `[trim_start_ms, trim_end_ms)`. Emits `render-progress`
+/// ({ fraction: 0..=1 }) as it goes. Video only for now — the source recording's audio isn't
+/// carried into the export yet, and background/frame/cursor styling aren't applied yet either.
+#[tauri::command(async)]
+fn export_video(
+    app: AppHandle,
+    video_path: String,
+    project_path: String,
+    out_path: String,
+    trim_start_ms: u64,
+    trim_end_ms: u64,
+) -> Result<Finished, String> {
+    let project = Project::load(std::path::Path::new(&project_path)).map_err(|e| e.to_string())?;
+    let screen = project.screen;
+    let video_path = std::path::Path::new(&video_path);
+    let out_path_ref = std::path::Path::new(&out_path);
+    let progress_app = app.clone();
+    engine::render_project(&project, video_path, out_path_ref, trim_start_ms, trim_end_ms, move |fraction| {
+        let _ = progress_app.emit("render-progress", json!({ "fraction": fraction }));
+    })?;
+    let size_mb = std::fs::metadata(out_path_ref).map(|m| m.len() as f64 / 1_048_576.0).unwrap_or(0.0);
+    let seconds = (trim_end_ms.saturating_sub(trim_start_ms) + 500) / 1000;
+    Ok(Finished { path: out_path, project_path: None, seconds, size_mb, screen })
+}
+
 #[tauri::command(async)]
 fn video_thumbnail(path: String) -> Result<String, String> {
     engine::video_thumbnail(&path)
@@ -405,6 +431,7 @@ pub fn run() {
             resume_recording,
             reveal_in_folder,
             load_project,
+            export_video,
             video_thumbnail,
             set_close_to_tray,
             show_main_window,

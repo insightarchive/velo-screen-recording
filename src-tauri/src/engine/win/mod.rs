@@ -3,8 +3,10 @@
 
 mod audio;
 mod capture;
+mod decode;
 mod input;
 mod preview;
+mod render;
 mod sources;
 mod video_thumb;
 
@@ -21,6 +23,7 @@ use windows_capture::capture::CaptureControl;
 use windows_capture::encoder::VideoEncoder;
 
 pub use preview::{start as start_preview, thumbnail as capture_thumbnail, Preview};
+pub use render::render as render_project;
 pub use sources::list_sources;
 pub use video_thumb::thumbnail as video_thumbnail;
 

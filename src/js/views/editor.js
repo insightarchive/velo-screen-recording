@@ -1,5 +1,5 @@
 import { icon, card, row, seg, switchBtn, range, screenArt, fmtShort } from '../ui.js';
-import { library, ui, editor, BACKGROUNDS, videoThumbs } from '../state.js';
+import { library, ui, editor, BACKGROUNDS, videoThumbs, exportState } from '../state.js';
 import { fileSrc } from '../bridge.js';
 
 const $ = (id) => document.getElementById(id);
@@ -90,7 +90,9 @@ export function view() {
         <span class="chip-lg">${icon('clapperboard')}</span>
         <div><h1>Editor</h1><p>${rec.name} &middot; ${fmtShort(kept)} after trimming</p></div>
       </div>
-      <button class="btn primary lg" data-act="export">${icon('download')}Export</button>
+      <button class="btn primary lg" data-act="export" id="export-btn" ${exportState.active ? 'disabled' : ''}>
+        ${exportState.active ? `Exporting… ${Math.round(exportState.fraction * 100)}%` : `${icon('download')}Export`}
+      </button>
     </div>
     <div class="grid editor">
       <div class="stack">
@@ -104,21 +106,20 @@ export function view() {
         </section>
       </div>
       <div class="stack">
-        ${card({ ic: 'image', title: 'Background', body: swatches })}
-        ${card({ ic: 'layers', title: 'Frame', body: [
+        ${card({ ic: 'image', title: 'Background', hint: 'Preview only, for now', body: swatches })}
+        ${card({ ic: 'layers', title: 'Frame', hint: 'Preview only, for now', body: [
           row({ title: 'Padding', ctl: `<div style="width:150px">${range('pad', 0, 120, editor.pad, 'Padding')}</div>` }),
           row({ title: 'Corner radius', ctl: `<div style="width:150px">${range('radius', 0, 40, editor.radius, 'Corner radius')}</div>` }),
           row({ title: 'Shadow', ctl: switchBtn('shadow', editor.shadow, 'Shadow') }),
         ].join('') })}
-        ${card({ ic: 'mouse-pointer-click', title: 'Cursor', body: [
+        ${card({ ic: 'mouse-pointer-click', title: 'Cursor', hint: 'Shape coming soon', body: [
           row({ title: 'Cursor size', ctl: `<div style="width:150px">${range('cursorSize', 60, 220, editor.cursorSize, 'Cursor size')}</div>` }),
           row({ title: 'Click ring', ctl: switchBtn('ring', editor.ring, 'Click ring') }),
           row({ title: 'Smoothing', ctl: seg('smooth', ['Low', 'Medium', 'High'], editor.smooth) }),
         ].join('') })}
-        ${card({ ic: 'download', title: 'Export', body: [
-          row({ title: 'Format', ctl: seg('format', ['MP4', 'GIF'], editor.format) }),
-          row({ title: 'Resolution', ctl: seg('res', ['720p', '1080p', '4K'], editor.res) }),
-        ].join('') })}
+        ${card({ ic: 'download', title: 'Export', body: `
+          <p class="muted" style="margin:0 0 12px">Exports trim and auto-zoom (with the cursor redrawn, if it was left out of the recording). MP4, source resolution, no audio yet — background, frame and GIF are next.</p>
+        ` })}
       </div>
     </div>`;
 }

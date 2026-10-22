@@ -92,6 +92,9 @@ export function removeRecording(id) {
 
 export const ui = { settingsTab: 'General', search: '', sort: 'Newest', editorId: null };
 
+/** Live state of an in-progress export (the auto-zoom render → finished mp4). */
+export const exportState = { active: false, fraction: 0 };
+
 export const editor = {
   bg: 0, pad: 64, radius: 16, shadow: true,
   trim: [0, 100], zooms: [{ start: 22, end: 38, scale: 2 }, { start: 60, end: 72, scale: 1.6 }],

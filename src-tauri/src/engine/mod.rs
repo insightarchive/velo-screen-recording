@@ -9,12 +9,12 @@ use velo_director::Size;
 #[cfg(windows)]
 mod win;
 #[cfg(windows)]
-pub use win::{capture_thumbnail, list_sources, start_preview, video_thumbnail, Preview, Recording};
+pub use win::{capture_thumbnail, list_sources, render_project, start_preview, video_thumbnail, Preview, Recording};
 
 #[cfg(not(windows))]
 mod stub;
 #[cfg(not(windows))]
-pub use stub::{capture_thumbnail, list_sources, start_preview, video_thumbnail, Preview, Recording};
+pub use stub::{capture_thumbnail, list_sources, render_project, start_preview, video_thumbnail, Preview, Recording};
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SourceInfo {
