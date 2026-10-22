@@ -13,18 +13,19 @@ body {
   display: flex; align-items: center; gap: 3px; width: 100%; height: 56px; flex: none; box-sizing: border-box;
   padding: 0 6px; border-radius: 999px;
   background: var(--surface); color: var(--text); border: 1px solid var(--border-strong);
-  box-shadow: 0 10px 28px rgba(20, 16, 36, 0.16);
+  box-shadow: none;
 }
 
 .source-btn {
   display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px 0 8px; border: 0; border-radius: 999px;
-  background: var(--surface-sunken); color: var(--text); font-weight: 600; font-size: 13px; flex: none; max-width: 112px;
+  background: var(--surface-sunken); color: var(--text); font-weight: 600; font-size: 13px; line-height: 1; flex: none; max-width: 112px;
 }
 .source-btn:hover { background: var(--border); }
-.source-btn .ic .icon { width: 15px; height: 15px; flex: none; color: var(--accent); }
-.source-btn .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.source-btn .chev { width: 6px; height: 6px; border-right: 1.5px solid var(--text-3); border-bottom: 1.5px solid var(--text-3); transform: rotate(45deg); flex: none; margin-top: -3px; }
-.source-btn[aria-expanded="true"] .chev { transform: rotate(225deg); margin-top: 3px; }
+.source-btn .ic { display: flex; align-items: center; flex: none; }
+.source-btn .ic .icon { display: block; width: 15px; height: 15px; flex: none; color: var(--accent); }
+.source-btn .lbl { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.source-btn .chev { width: 6px; height: 6px; border-right: 1.5px solid var(--text-3); border-bottom: 1.5px solid var(--text-3); transform: rotate(45deg); flex: none; }
+.source-btn[aria-expanded="true"] .chev { transform: rotate(225deg); }
 
 .sep { width: 1px; height: 22px; background: var(--border); flex: none; margin: 0 1px; }
 
@@ -40,11 +41,11 @@ body {
 .icon-btn.sm .icon { width: 15px; height: 15px; }
 
 .record-btn {
-  display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; flex: none;
+  display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 50%; flex: none;
   background: var(--danger); color: var(--danger-ink); box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
 }
 .record-btn:hover { filter: brightness(0.94); }
-.record-btn .icon { width: 18px; height: 18px; }
+.record-btn .icon { width: 15px; height: 15px; }
 .record-btn.counting { animation: pulse 1s infinite; }
 @keyframes pulse { 50% { opacity: 0.55; } }
 

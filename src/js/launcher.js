@@ -32,7 +32,6 @@ function paintBar() {
   $('timer-btn').setAttribute('aria-label', settings.countdown === '0' ? 'Countdown: off' : `Countdown: ${settings.countdown}s`);
   $('record-btn').innerHTML = icon('circle-dot');
   $('more-btn').innerHTML = icon('more-vertical');
-  $('min-btn').innerHTML = icon('minus');
   $('close-btn').innerHTML = icon('x');
 }
 
@@ -149,7 +148,6 @@ $('timer-btn').addEventListener('click', openTimerPopover);
 $('more-btn').addEventListener('click', openMorePopover);
 $('menu-folder').addEventListener('click', () => { invoke('reveal_in_folder', { path: settings.folder }); closePopovers(); });
 $('menu-main').addEventListener('click', () => { invoke('show_main_window'); closePopovers(); });
-$('min-btn').addEventListener('click', () => windowControl('minimize'));
 $('close-btn').addEventListener('click', () => windowControl('close'));
 $('record-btn').addEventListener('click', () => {
   if (session.counting || session.recording) return;

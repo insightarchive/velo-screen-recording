@@ -6,7 +6,7 @@ body { margin: 0; overflow: hidden; -webkit-user-select: none; user-select: none
   display: flex; align-items: center; gap: 10px; width: 100%; height: 56px;
   padding: 0 8px 0 16px; border-radius: 999px;
   background: var(--surface); color: var(--text); border: 1px solid var(--border-strong);
-  box-shadow: 0 10px 28px rgba(20, 16, 36, 0.16);
+  box-shadow: none;
 }
 .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); animation: pulse 1.2s infinite; flex: none; }
 .paused .dot { animation: none; background: var(--warn); }
