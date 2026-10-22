@@ -1,0 +1,25 @@
+html, body { background: transparent; }
+body { margin: 0; overflow: hidden; -webkit-user-select: none; user-select: none; display: flex; justify-content: center; height: 100vh; }
+/* Padding leaves room for the bar's own box-shadow so it isn't clipped by the window edge. */
+.pill-wrap { display: flex; align-items: center; padding: 18px; width: 100%; }
+.pill-bar {
+  display: flex; align-items: center; gap: 10px; width: 100%; height: 56px;
+  padding: 0 8px 0 16px; border-radius: 999px;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border-strong);
+  box-shadow: 0 10px 28px rgba(20, 16, 36, 0.16);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); animation: pulse 1.2s infinite; flex: none; }
+.paused .dot { animation: none; background: var(--warn); }
+.time { font-family: var(--mono); font-size: 16px; font-weight: 600; min-width: 70px; color: var(--text); }
+.level { flex: 1; min-width: 24px; height: 6px; border-radius: 3px; background: var(--surface-sunken); overflow: hidden; }
+.level i { display: block; height: 100%; width: 0; background: var(--ok); transition: width 0.08s linear; }
+.pill-btn {
+  display: grid; place-items: center; width: 38px; height: 38px; border: 0; border-radius: 50%;
+  background: var(--surface-sunken); color: var(--text-2); flex: none;
+}
+.pill-btn:hover { background: var(--border); color: var(--text); }
+.pill-btn:disabled { opacity: 0.4; pointer-events: none; }
+.pill-btn.stop { background: var(--danger); color: var(--danger-ink); }
+.pill-btn.stop:hover { filter: brightness(0.92); }
+.pill-btn.delete:hover { background: var(--danger-soft); color: var(--danger); }
+@keyframes pulse { 50% { opacity: 0.3; } }

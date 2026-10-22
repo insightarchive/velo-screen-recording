@@ -1,0 +1,38 @@
+[package]
+name = "velo-recorder"
+description = "Velo Screen Recorder"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "velo_recorder_lib"
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset", "tray-icon"] }
+tauri-plugin-global-shortcut = "2"
+serde.workspace = true
+serde_json.workspace = true
+parking_lot = "0.12"
+velo-core = { path = "../crates/velo-core" }
+velo-director = { path = "../crates/velo-director" }
+
+[target.'cfg(windows)'.dependencies]
+windows-capture = "2.0.1"
+wasapi = "0.26"
+base64 = "0.22"
+windows = { version = "0.62", features = [
+  "Win32_Foundation",
+  "Win32_Graphics_Gdi",
+  "Win32_System_Com",
+  "Win32_System_LibraryLoader",
+  "Win32_System_SystemInformation",
+  "Win32_System_Threading",
+  "Win32_UI_Shell",
+  "Win32_UI_WindowsAndMessaging",
+] }

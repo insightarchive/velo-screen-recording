@@ -1,0 +1,15 @@
+{
+  "name": "velo-screen-recorder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fast, lightweight screen recorder for Windows (Tauri).",
+  "scripts": {
+    "icons": "node scripts/gen-icons.mjs",
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

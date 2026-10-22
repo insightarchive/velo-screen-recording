@@ -1,0 +1,11 @@
+[package]
+name = "velo-core"
+description = "Platform-independent recording logic for Velo: clock, audio mixer, config and project files."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+velo-director = { path = "../velo-director" }

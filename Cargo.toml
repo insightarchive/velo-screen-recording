@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = ["crates/velo-director", "crates/velo-core", "src-tauri"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.88"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+# Vendored copy with VideoEncoder::pause()/resume(); see vendor/windows-capture/VELO-PATCH.md
+[patch.crates-io]
+windows-capture = { path = "vendor/windows-capture" }

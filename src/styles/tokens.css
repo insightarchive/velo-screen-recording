@@ -1,0 +1,90 @@
+/* VELO design tokens. Every colour, radius and spacing value lives here so the
+   recorder can be dropped into the main VELO app and inherit its look. */
+
+:root,
+:root[data-theme="light"] {
+  --bg: #f4f2fb;
+  --surface: #ffffff;
+  --surface-2: #faf9fe;
+  --surface-sunken: #f1eefa;
+  --border: #e6e2f2;
+  --border-strong: #d5cfe8;
+
+  --text: #15131f;
+  --text-2: #5d5873;
+  --text-3: #8d88a3;
+
+  --accent: #9333ea;
+  --accent-strong: #7e22ce;
+  --accent-soft: #f3e8ff;
+  --accent-ink: #ffffff;
+
+  --ok: #16a34a;
+  --warn: #c47f0c;
+  --danger: #e11d48;
+  --danger-ink: #ffffff;
+  --danger-soft: #ffe4ea;
+
+  --shadow-sm: 0 1px 2px rgba(31, 22, 64, 0.05);
+  --shadow-md: 0 8px 24px -12px rgba(31, 22, 64, 0.18);
+  --focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+
+  --toggle-off: #d9d5e8;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0d17;
+  --surface: #181523;
+  --surface-2: #1d1a2b;
+  --surface-sunken: #13111d;
+  --border: #2a2640;
+  --border-strong: #38335a;
+
+  --text: #f1eefc;
+  --text-2: #b0abc7;
+  --text-3: #7f7a97;
+
+  --accent: #b66cf5;
+  --accent-strong: #c48bf8;
+  --accent-soft: #2a1d42;
+  --accent-ink: #14101f;
+
+  --ok: #4ade80;
+  --warn: #e0a03a;
+  --danger: #fb7185;
+  --danger-ink: #1c0a10;
+  --danger-soft: #3a1620;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+
+  --toggle-off: #38335a;
+}
+
+/* Per-feature accents, like the rest of VELO (set data-accent on a page). */
+[data-accent="rose"] {
+  --accent: #e11d48;
+  --accent-strong: #be123c;
+  --accent-soft: #ffe4ea;
+}
+:root[data-theme="dark"] [data-accent="rose"] {
+  --accent: #fb7185;
+  --accent-strong: #fda4af;
+  --accent-soft: #3a1620;
+  --accent-ink: #1c0a10;
+}
+
+:root {
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --sidebar-w: 232px;
+  --titlebar-h: 62px;
+
+  --font: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, "Inter", sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", ui-monospace, Consolas, monospace;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

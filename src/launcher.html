@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Velo Recorder</title>
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/launcher.css" />
+</head>
+<body>
+  <div class="launcher">
+    <div class="bar" id="bar" data-tauri-drag-region>
+      <button class="source-btn" id="source-btn" aria-haspopup="listbox" aria-expanded="false" title="Choose what to record">
+        <span class="ic" id="source-icon"></span>
+        <span class="lbl" id="source-label">Screen</span>
+        <span class="chev"></span>
+      </button>
+      <div class="sep"></div>
+      <button class="icon-btn" id="mic-btn" aria-label="Microphone" title="Microphone"></button>
+      <button class="icon-btn" id="system-btn" aria-label="System sound" title="System sound"></button>
+      <button class="icon-btn" id="cam-btn" aria-label="Camera" title="Camera"></button>
+      <button class="icon-btn" id="timer-btn" aria-label="Countdown" title="Countdown"></button>
+      <button class="record-btn" id="record-btn" aria-label="Start recording" title="Start recording"></button>
+      <div class="sep"></div>
+      <button class="icon-btn sm" id="more-btn" aria-label="More options" title="More options"></button>
+      <button class="icon-btn sm" id="min-btn" aria-label="Minimize" title="Minimize"></button>
+      <button class="icon-btn sm" id="close-btn" aria-label="Close" title="Close"></button>
+    </div>
+    <div class="popover" id="source-popover" hidden>
+      <div class="group" id="screens-group"><div class="group-label">Screens</div><div class="list" id="screens-list"></div></div>
+      <div class="group" id="windows-group"><div class="group-label">Windows</div><div class="list" id="windows-list"></div></div>
+    </div>
+    <div class="popover timer-popover" id="timer-popover" hidden>
+      <div class="group"><div class="group-label">Countdown</div><div class="choices" id="timer-choices"></div></div>
+    </div>
+    <div class="popover more-popover" id="more-popover" hidden>
+      <button class="menu-item" id="menu-folder">Open recordings folder</button>
+      <button class="menu-item" id="menu-main">Open Velo Recorder</button>
+    </div>
+  </div>
+  <script type="module" src="js/launcher.js"></script>
+</body>
+</html>

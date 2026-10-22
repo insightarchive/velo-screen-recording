@@ -1,0 +1,12 @@
+[package]
+name = "velo-director"
+description = "Turns recorded mouse and keyboard activity into a smooth auto-zoom camera path."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

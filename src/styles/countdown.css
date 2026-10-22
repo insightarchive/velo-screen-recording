@@ -1,0 +1,18 @@
+html, body { background: transparent; margin: 0; height: 100%; overflow: hidden; -webkit-user-select: none; user-select: none; }
+body { display: grid; place-items: center; }
+
+.num {
+  width: 260px; height: 260px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle, rgba(15, 13, 23, 0.55) 0%, rgba(15, 13, 23, 0.22) 65%, transparent 100%);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  font-family: "Cascadia Mono", "SF Mono", ui-monospace, Consolas, monospace;
+  font-size: 150px; font-weight: 800; color: #fff; line-height: 1;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.75);
+}
+
+.num.pop { animation: pop 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  55% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}

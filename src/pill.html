@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Velo Recorder</title>
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/pill.css" />
+</head>
+<body>
+  <div class="pill-wrap">
+    <div class="pill-bar" id="bar" data-tauri-drag-region>
+      <span class="dot" data-tauri-drag-region></span>
+      <span class="time" id="time" data-tauri-drag-region>00:00</span>
+      <span class="level" aria-hidden="true"><i id="level"></i></span>
+      <button class="pill-btn" id="pause" aria-label="Pause" title="Pause"></button>
+      <button class="pill-btn delete" id="delete" aria-label="Delete recording" title="Delete recording"></button>
+      <button class="pill-btn stop" id="stop" aria-label="Stop recording" title="Stop recording"></button>
+    </div>
+  </div>
+  <script type="module" src="js/pill.js"></script>
+</body>
+</html>
