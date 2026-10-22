@@ -146,9 +146,16 @@ impl Recording {
             control.stop().map_err(|e| format!("Stopping capture failed: {e}"))?;
         }
         let encoder = self.shared.encoder.lock().take().ok_or("The recording never started.")?;
+        let Some(offset) = self.shared.first_frame() else {
+            // Stopped before any frame arrived (e.g. discarded within the first instant). The
+            // encoder still needs finishing to release the file handle, then the empty file it
+            // wrote is removed instead of being left behind.
+            let _ = encoder.finish();
+            let _ = std::fs::remove_file(&self.video_path);
+            return Err("No video frames were captured.".into());
+        };
         encoder.finish().map_err(|e| format!("Saving the video failed: {e}"))?;
 
-        let offset = self.shared.first_frame().ok_or("No video frames were captured.")?;
         let duration_ms = end_ms.saturating_sub(offset);
         let events = std::mem::take(&mut *self.shared.events.lock());
 
