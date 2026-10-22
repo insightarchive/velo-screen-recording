@@ -1,4 +1,4 @@
-import { icon, hydrate, fmtTime } from './ui.js';
+import { icon, hydrate, fmtTime, esc } from './ui.js';
 import { inTauri, invoke, listen, windowControl } from './bridge.js';
 import { settings, set, toggle, resetSettings, session, library, addRecording, removeRecording, editor, ui, subscribe, devices, setDevices, preview, thumbs, videoThumbs, exportState } from './state.js';
 import * as sess from './session.js';
@@ -40,7 +40,16 @@ function render() {
   const active = document.activeElement;
   const wasSearch = active?.matches?.('[data-search]');
   const caret = wasSearch ? active.selectionStart : 0;
-  page.innerHTML = ROUTES[route].view();
+  try {
+    page.innerHTML = ROUTES[route].view();
+  } catch (e) {
+    console.error('Render failed:', e);
+    page.innerHTML = `<section class="card"><div class="empty">
+      <b>Something went wrong showing this page</b>
+      <span>${esc(String(e?.message ?? e))}</span>
+      <button class="btn primary" data-go="library">Go to Library</button>
+    </div></section>`;
+  }
   paintShell();
   if (wasSearch) { const el = page.querySelector('[data-search]'); el?.focus(); el?.setSelectionRange(caret, caret); }
   syncPreview();

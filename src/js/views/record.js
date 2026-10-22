@@ -32,10 +32,10 @@ function sourceList() {
 }
 
 function previewBadge() {
-  if (settings.mode === 'display') return devices.displays[settings.display].name;
-  if (settings.mode === 'window') return devices.windows[settings.window].name;
+  if (settings.mode === 'display') return devices.displays[settings.display]?.name ?? 'No display found';
+  if (settings.mode === 'window') return devices.windows[settings.window]?.name ?? 'No window found';
   if (settings.mode === 'region') return `Region ${settings.aspect}`;
-  return devices.cameras[settings.cameraDevice];
+  return devices.cameras[settings.cameraDevice] ?? 'No camera found';
 }
 
 /** The real capture when one is streaming (display/window, in Tauri); the mock art otherwise. */
